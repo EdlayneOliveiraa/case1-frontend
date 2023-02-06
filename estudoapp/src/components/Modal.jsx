@@ -10,7 +10,7 @@ function CreateContentModal(props) {
         <Form onSubmit={(event) => {
           props.createContent(event)
         }}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton onClick={props.handleClose}>
           <Modal.Title>Criar Conteúdo</Modal.Title>
         </Modal.Header>
 

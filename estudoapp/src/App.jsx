@@ -45,18 +45,20 @@ function App() {
 
       const req = event.currentTarget.elements
 
-      const response = await ContentsApi().createContent(
+      await ContentsApi().createContent(
         req.titulo.value, req.descricao.value, Number(req.porcentagem.value)
-      )
+      ).then(data => {
+        return data.json()
+      }).then(res => {
+        setContents([...contents, {
+          id: res.contentId,
+          titulo: req.titulo.value,
+          descricao: req.descricao.value,
+          porcentagem: Number(req.porcentagem.value)
+        }])
 
-      const filteredContent = contents.push({
-        id: response.data.contentId,
-        titulo: req.titulo.value,
-        descricao: req.descricao.value,
-        porcentagem: Number(req.porcentagem.value)
+        setIsModalOpen(false)
       })
-
-      setContents(filteredContent)
     } catch(err) {
       throw err
     }
