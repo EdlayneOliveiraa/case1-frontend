@@ -51,7 +51,7 @@ Exclua os arquivos de configuração inicial do vite, deixando apenas uma div no
 
 
 ### 4. Criando o servidor
-Crie a pasta api, e dentro inclua um arquivo com as rotas que foram criadas em sua api. Criando funções para cada ação do banck end.
+Crie a pasta api, e dentro inclua um arquivo com as rotas que foram criadas em sua api. Criando funções para cada ação do back-end.
 
 ```js
 
