@@ -1,5 +1,5 @@
 import { Table, Container, Button } from 'react-bootstrap'
-import ContentsApi from './api/CmsApi'
+import ContentsApi from './api/ContentsApi'
 import { useEffect, useState } from 'react'
 import CreateContentModal from './components/CreateContentModal'
 import UpdateContentModal from './components/UpdateContentModal'
