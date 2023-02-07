@@ -1,5 +1,5 @@
 const ContentsApi = () => {
-  const url = 'http://localhost:3333'
+  const url = 'http://localhost:3000'
 
   return {
       getContents () {
