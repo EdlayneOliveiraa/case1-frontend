@@ -1,14 +1,20 @@
 import { Table, Container, Button } from 'react-bootstrap'
 import ContentsApi from './api/CmsApi'
 import { useEffect, useState } from 'react'
-import CreateContentModal from './components/Modal'
+import CreateContentModal from './components/CreateContentModal'
+import UpdateContentModal from './components/UpdateContentModal'
 
 function App() {
   const [contents, setContents] = useState()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+  const [selectedContent, setSelectedContent] = useState()
 
-  const handleClose = () => setIsModalOpen(false);
-  const handleShow = () => setIsModalOpen(true);
+  const handleCloseCreateModal = () => setIsCreateModalOpen(false);
+  const handleShowCreateModal = () => setIsCreateModalOpen(true);
+
+  const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
+  const handleShowUpdateModal = () => setIsUpdateModalOpen(true);
 
   useEffect(() => {
     async function getData() {
@@ -57,8 +63,39 @@ function App() {
           porcentagem: Number(req.porcentagem.value)
         }])
 
-        setIsModalOpen(false)
+        setIsCreateModalOpen(false)
       })
+    } catch(err) {
+      throw err
+    }
+  }
+
+  async function updateContent(event) {
+    try {
+      event.preventDefault()
+
+      const req = event.currentTarget.elements
+
+      await ContentsApi().updateContent(
+        selectedContent.id, req.titulo.value, req.descricao.value, Number(req.porcentagem.value)
+      )
+
+      const formattedContents = contents.map(cont => {
+        if(cont.id === selectedContent.id) {
+          return {
+            id: selectedContent.id,
+            titulo:  req.titulo.value,
+            descricao: req.descricao.value,
+            porcentagem: Number(req.porcentagem.value)
+          }
+        }
+
+        return cont
+      })
+
+      setContents(formattedContents)
+
+      setIsUpdateModalOpen(false)
     } catch(err) {
       throw err
     }
@@ -78,7 +115,7 @@ function App() {
     >
       <Button
         className="mb-2"
-        onClick={handleShow}
+        onClick={handleShowCreateModal}
         variant='primary'>
         Criar Conteúdo
       </Button>
@@ -102,13 +139,27 @@ function App() {
                 <Button onClick={() => deleteContent(cont.id)} variant='danger'>
                   Excluir
                 </Button>
+                <Button
+                  onClick={() => {
+                    handleShowUpdateModal()
+                    setSelectedContent(cont)
+                  }}
+                  variant='warning'
+                  className='m-1'
+                  >
+                  Atualizar
+                </Button>
               </td>
+
             </tr>
           ))}
         </tbody>
       </Table>
     </Container>
-    <CreateContentModal isModalOpen={isModalOpen} handleClose={handleClose} createContent={createContent} />
+    <CreateContentModal isModalOpen={isCreateModalOpen} handleClose={handleCloseCreateModal} createContent={createContent} />
+    {selectedContent && (
+      <UpdateContentModal isModalOpen={isUpdateModalOpen} handleClose={handleCloseUpdateModal} updateContent={updateContent} content={selectedContent} />
+    )}
     </>
   )
 }

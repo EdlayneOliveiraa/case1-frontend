@@ -33,6 +33,21 @@ const ContentsApi = () => {
           )
        })
       },
+      updateContent(contentId, titulo, descricao, porcentagem) {
+        return fetch(`${url}/conteudo/${contentId}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+            {
+              titulo: titulo,
+              descricao: descricao,
+              porcentagem: porcentagem
+            }
+          )
+       })
+      },
   }
 }
 

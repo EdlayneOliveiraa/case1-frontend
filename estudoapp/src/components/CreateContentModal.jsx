@@ -1,6 +1,5 @@
 import { Modal, Button, Form } from 'react-bootstrap'
 function CreateContentModal(props) {
-
   return(
     <div
       className="modal show"
